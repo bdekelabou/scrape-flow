@@ -17,7 +17,7 @@ Formation suivie jusqu'à 12:23:00.
 Continuer avec la tâche "Extract Data with AI".
 # Progression ScrapeFlow
 
-## 13 août 2026
+## 12 août 2026
 
 ### Progression
 Formation suivie jusqu'à **31:10**.
@@ -33,3 +33,21 @@ Continuer la configuration de l'authentification, puis passer à la mise en plac
 
 ### Commit
 `feat: set up authentication`
+
+## 13 août 2026
+
+### Progression
+Formation suivie au-delà de **37:28 — Database setup**.
+
+### Travail réalisé
+- Mise en place de la structure initiale du projet.
+- Configuration de l'authentification.
+- Mise en place de la base de données.
+- Poursuite de l'intégration des fonctionnalités de ScrapeFlow.
+
+### Prochaine étape
+Continuer avec la section suivante de la formation et poursuivre la construction de l'application.
+
+### Commits
+- `feat: set up authentication`
+- `feat: set up database`
