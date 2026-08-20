@@ -50,3 +50,19 @@ Continuer la création de l'interface des workflows et commencer la mise en plac
 
 ### Commit
 `feat: build workflows page`
+
+## 19 août 2026
+
+### Progression
+Formation suivie jusqu'à **01:32:12 — Delete workflow dialog**.
+
+### Travail réalisé
+- Mise en place de la Workflow Card.
+- Création de l'interface de la Workflow Card.
+- Ajout de la fonctionnalité de suppression d'un workflow avec son dialog de confirmation.
+
+### Prochaine étape
+Continuer avec la section **Workflow**.
+
+### Commit
+`feat: add workflow card and delete dialog`
