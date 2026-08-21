@@ -66,3 +66,16 @@ Continuer avec la section **Workflow**.
 
 ### Commit
 `feat: add workflow card and delete dialog`
+
+## 20 août 2026
+
+### Progression
+Formation suivie jusqu'à **01:41:05 — Workflow**.
+
+### Travail réalisé
+- Poursuite de la construction des workflows.
+- Début de la section Workflow.
+- Intégration des éléments nécessaires à l'éditeur de workflow.
+
+### Prochaine étape
+Continuer avec **Extract text from element task**.
