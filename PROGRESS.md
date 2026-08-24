@@ -92,3 +92,20 @@ Formation suivie jusqu'à **01:58:19 — Extract text from element task**.
 
 ### Prochaine étape
 Continuer avec **02:04:16 — Node component**.
+
+## 24 août 2026
+
+### Progression
+Formation suivie jusqu'à **02:04:16 — Node component**.
+
+### Travail réalisé
+- Poursuite de la construction de l'éditeur de workflows.
+- Mise en place de la tâche Extract Text From Element.
+- Travail sur le composant Node.
+- Intégration du Node Component dans l'éditeur de workflow.
+
+### Prochaine étape
+Continuer avec **02:20:54 — Task/Node inputs**.
+
+### Commit
+`feat: build node component`
