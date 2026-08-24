@@ -79,3 +79,16 @@ Formation suivie jusqu'à **01:41:05 — Workflow**.
 
 ### Prochaine étape
 Continuer avec **Extract text from element task**.
+
+## 24 août 2026
+
+### Progression
+Formation suivie jusqu'à **01:58:19 — Extract text from element task**.
+
+### Travail réalisé
+- Poursuite de la construction de l'éditeur de workflows.
+- Mise en place de la tâche **Extract Text From Element**.
+- Intégration de cette nouvelle tâche dans le système de workflow.
+
+### Prochaine étape
+Continuer avec **02:04:16 — Node component**.
