@@ -126,3 +126,19 @@ Continuer avec **02:41:00 — Save button**.
 
 ### Commit
 `feat: add task node inputs`
+
+## 25 août 2026
+
+### Progression
+Formation suivie jusqu'à **02:41:00 — Save button**.
+
+### Travail réalisé
+- Poursuite de la construction de l'éditeur de workflows.
+- Mise en place des inputs des tâches et des nœuds.
+- Ajout et intégration du bouton de sauvegarde du workflow.
+
+### Prochaine étape
+Continuer avec **03:03:22 — Task menu**.
+
+### Commit
+`feat: add workflow save button`
