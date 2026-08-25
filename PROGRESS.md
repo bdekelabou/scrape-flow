@@ -109,3 +109,20 @@ Continuer avec **02:20:54 — Task/Node inputs**.
 
 ### Commit
 `feat: build node component`
+
+## 25 août 2026
+
+### Progression
+Formation suivie jusqu'à **02:20:54 — Task/Node inputs**.
+
+### Travail réalisé
+- Poursuite de la construction de l'éditeur de workflows.
+- Travail sur le composant Node.
+- Mise en place des inputs des tâches et des nœuds.
+- Intégration de la gestion des Task/Node inputs.
+
+### Prochaine étape
+Continuer avec **02:41:00 — Save button**.
+
+### Commit
+`feat: add task node inputs`
