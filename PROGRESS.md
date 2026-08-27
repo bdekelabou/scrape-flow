@@ -142,3 +142,19 @@ Continuer avec **03:03:22 — Task menu**.
 
 ### Commit
 `feat: add workflow save button`
+
+## 27 août 2026
+
+### Progression
+Formation suivie jusqu'à **03:03:22 — Task menu**.
+
+### Travail réalisé
+- Poursuite de la construction de l'éditeur de workflows.
+- Mise en place du bouton de sauvegarde du workflow.
+- Ajout et intégration du menu des tâches (Task menu).
+
+### Prochaine étape
+Continuer avec **03:14:25 — Task/Node outputs**.
+
+### Commit
+`feat: add task menu`
