@@ -158,3 +158,19 @@ Continuer avec **03:14:25 — Task/Node outputs**.
 
 ### Commit
 `feat: add task menu`
+
+## 28 août 2026
+
+### Progression
+Formation suivie jusqu'à **03:14:25 — Task/Node outputs**.
+
+### Travail réalisé
+- Poursuite de la construction de l'éditeur de workflows.
+- Mise en place du Task menu.
+- Ajout et gestion des outputs des tâches et des nœuds.
+
+### Prochaine étape
+Continuer avec **03:27:33 — Deletable edge**.
+
+### Commit
+`feat: add task node outputs`
