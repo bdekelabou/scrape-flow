@@ -206,3 +206,20 @@ Continuer avec **03:38:09 — Connections validation**.
 
 ### Commit
 `feat: improve extract text task`
+
+
+## 31 août 2026
+
+### Progression
+Formation suivie jusqu'à **03:38:09 — Connections validation**.
+
+### Travail réalisé
+- Poursuite de l'implémentation de la tâche Extract Text From Element.
+- Mise en place de la validation des connexions entre les tâches/nœuds.
+- Contrôle des connexions autorisées dans le workflow.
+
+### Prochaine étape
+Continuer avec **03:59:00 — Delete/Duplicate task**.
+
+### Commit
+`feat: validate node connections`
