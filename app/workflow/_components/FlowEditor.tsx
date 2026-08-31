@@ -67,7 +67,7 @@ function FlowEditor({ workflow }: { workflow: Workflow }) {
 
         const newNode = CreateFlowNode(taskType as TaskType, position);
         setNodes((nds) => nds.concat(newNode));
-    },[]);
+    }, [screenToFlowPosition, setNodes]);
 
     // const onEdgesChange = useCallback(
     //     (changes: EdgeChange[]) => {
@@ -92,25 +92,9 @@ function FlowEditor({ workflow }: { workflow: Workflow }) {
     
     const onConnect = useCallback(
         (connection: Connection) => {
-            console.log("@ON CONNECT", connection);
-
             setEdges((eds) => addEdge({ ...connection, animated: true }, eds));
-            if (!connection.targetHandle) return;
-            // Remove input value if is present on connection 
-            const node = nodes.find((nd) => nd.id === connection.target);
-             console.log("@TARGET NODE", node);
-            if (!node) return;
-            const nodeInputs = node.data.inputs;
-            updateNodeData (node.id, {
-                inputs: {
-                    ...nodeInputs,
-                    [connection.targetHandle]:"",
-                },
-            });
-            console.log("@UPDATE NODE", node.id);
         }, 
-        // [setEdges, updateNodeData]
-        [ setEdges, updateNodeData]
+        [setEdges]
     );
 
     
