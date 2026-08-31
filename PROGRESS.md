@@ -190,3 +190,19 @@ Continuer avec **03:34:57 — Extract text from element task**.
 
 ### Commit
 `feat: add deletable edges`
+
+## 31 août 2026
+
+### Progression
+Formation suivie jusqu'à **03:34:57 — Extract text from element task**.
+
+### Travail réalisé
+- Poursuite de la construction de l'éditeur de workflows.
+- Mise en place des edges supprimables.
+- Poursuite de l'implémentation de la tâche **Extract Text From Element**.
+
+### Prochaine étape
+Continuer avec **03:38:09 — Connections validation**.
+
+### Commit
+`feat: improve extract text task`

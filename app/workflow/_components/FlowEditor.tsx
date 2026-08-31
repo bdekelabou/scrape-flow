@@ -19,10 +19,15 @@ import { CreateFlowNode } from '@/lib/workflow/createFlowNode';
 import { TaskType } from '@/types/task';
 import NodeComponent from './nodes/NodeComponent';
 import { AppNode } from '@/types/appNode';
+import DeletableEdge from './edges/DeletableEdge';
 
 const nodeTypes = {
     FlowScrapeNode: NodeComponent,
 };
+
+const edgeTypes = {
+    default: DeletableEdge,
+}
 
 const snapGrid: [number, number] = [50, 50];
 const fitViewOptions = { padding: 1 };
@@ -76,6 +81,7 @@ function FlowEditor({ workflow }: { workflow: Workflow }) {
                 onEdgesChange={onEdgesChange}
                 onNodesChange={onNodesChange}
                 nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
                 snapToGrid
                 snapGrid={snapGrid}
                 fitViewOptions={fitViewOptions}
