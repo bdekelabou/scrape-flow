@@ -174,3 +174,19 @@ Continuer avec **03:27:33 — Deletable edge**.
 
 ### Commit
 `feat: add task node outputs`
+
+## 29 août 2026
+
+### Progression
+Formation suivie jusqu'à **03:27:33 — Deletable edge**.
+
+### Travail réalisé
+- Poursuite de la construction de l'éditeur de workflows.
+- Mise en place des outputs des tâches et des nœuds.
+- Ajout de la possibilité de supprimer les connexions (edges) entre les nœuds.
+
+### Prochaine étape
+Continuer avec **03:34:57 — Extract text from element task**.
+
+### Commit
+`feat: add deletable edges`
