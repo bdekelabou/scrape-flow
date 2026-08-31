@@ -38,7 +38,7 @@ export default function DeletableEdge(props: EdgeProps) {
                     >
                         x
                     </Button>
-                </div>;
+                </div>
             </EdgeLabelRenderer>
         </>
     );

@@ -1,5 +1,3 @@
-"use client";
-
 import { Workflow } from '@prisma/client';
 import { 
     addEdge,
@@ -8,6 +6,7 @@ import {
     Connection, 
     Controls, 
     Edge, 
+    EdgeChange,
     ReactFlow,
     useEdgesState, 
     useNodesState, 
@@ -36,7 +35,8 @@ function FlowEditor({ workflow }: { workflow: Workflow }) {
     const [nodes, setNodes, onNodesChange] = useNodesState<AppNode>([]);
         // CreateFlowNode(TaskType.LAUNCH_BROWSER)
     const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
-    const { setViewport, screenToFlowPosition } = useReactFlow();
+    // const [edges, setEdges, handleEdgesChange] = useEdgesState<Edge>([]);
+    const { setViewport, screenToFlowPosition, updateNodeData } = useReactFlow();
 
     useEffect(() => {
         try {
@@ -68,11 +68,53 @@ function FlowEditor({ workflow }: { workflow: Workflow }) {
         const newNode = CreateFlowNode(taskType as TaskType, position);
         setNodes((nds) => nds.concat(newNode));
     },[]);
-    
-    const onConnect = useCallback((connection: Connection) => {
-        setEdges((eds) => addEdge({ ...connection, animated: true }, eds));
-    }, []);
 
+    // const onEdgesChange = useCallback(
+    //     (changes: EdgeChange[]) => {
+    //         changes.forEach((change) => {
+    //             if (change.type !== "remove") return;
+
+    //             const edge = edges.find((edge) => edge.id === change.id);
+
+    //             if (!edge) return;
+    //             if (!edge.targetHandle) return;
+
+    //             const node = nodes.find((node) => node.id === edge.target);
+
+    //             if (!node) return;
+
+    //         });
+
+    //     handleEdgesChange(changes);
+    //     },
+    //     [edges, nodes, handleEdgesChange, updateNodeData]
+    // );
+    
+    const onConnect = useCallback(
+        (connection: Connection) => {
+            console.log("@ON CONNECT", connection);
+
+            setEdges((eds) => addEdge({ ...connection, animated: true }, eds));
+            if (!connection.targetHandle) return;
+            // Remove input value if is present on connection 
+            const node = nodes.find((nd) => nd.id === connection.target);
+             console.log("@TARGET NODE", node);
+            if (!node) return;
+            const nodeInputs = node.data.inputs;
+            updateNodeData (node.id, {
+                inputs: {
+                    ...nodeInputs,
+                    [connection.targetHandle]:"",
+                },
+            });
+            console.log("@UPDATE NODE", node.id);
+        }, 
+        // [setEdges, updateNodeData]
+        [ setEdges, updateNodeData]
+    );
+
+    
+    console.log("@NODES", nodes);
     return (
         <main className='h-full w-full'>
             <ReactFlow
@@ -95,6 +137,6 @@ function FlowEditor({ workflow }: { workflow: Workflow }) {
             </ReactFlow>
         </main>
     );
-    }
+}
 
 export default FlowEditor;
