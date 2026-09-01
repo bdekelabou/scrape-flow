@@ -15,11 +15,8 @@ export default function ExecuteBtn({ workflowId }: { workflowId: string }) {
 
   const mutation = useMutation({
     mutationFn: RunWorkflow,
-    onSuccess: (result) => {
+    onSuccess: () => {
       toast.success("Execution started", { id: "flow-execution" });
-      if (result?.redirectUrl) {
-        router.push(result.redirectUrl);
-      }
     },
     onError: (error: any) => {
       toast.error(error?.message || "Failed to run workflow", {
