@@ -21,8 +21,10 @@ export default function ExecuteBtn({ workflowId }: { workflowId: string }) {
         router.push(result.redirectUrl);
       }
     },
-    onError: () => {
-      toast.error("Failed to run workflow", { id: "flow-execution" });
+    onError: (error: any) => {
+      toast.error(error?.message || "Failed to run workflow", {
+        id: "flow-execution",
+      });
     },
   });
 

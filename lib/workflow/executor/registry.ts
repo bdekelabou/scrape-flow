@@ -1,4 +1,4 @@
-import { TaskType } from "@/types/task";
+ import { TaskType } from "@/types/task";
 import { ExecutionContext } from "@/types/execution";
 import { LaunchBrowserExecutor } from "./LaunchBrowserExecutor";
 import { PageToHtmlExecutor } from "./PageToHtmlExecutor";

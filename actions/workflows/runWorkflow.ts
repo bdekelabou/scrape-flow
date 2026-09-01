@@ -1,7 +1,10 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { FlowExecutionPlan } from "@/lib/workflow/executionPlan";
+import {
+  FlowExecutionPlan,
+  FlowExecutionPlanValidationError,
+} from "@/lib/workflow/executionPlan";
 import { ExecuteWorkflow } from "@/lib/workflow/executeWorkflow";
 import { TaskRegistry } from "@/lib/workflow/task/registry";
 import {
@@ -26,7 +29,7 @@ export async function RunWorkflow(form: {
   });
 
   if (!workflow) {
-    throw new Error("workflow not found");
+    throw new Error("Workflow not found");
   }
 
   const definition = flowDefinition || workflow.definition;
@@ -34,6 +37,15 @@ export async function RunWorkflow(form: {
 
   const result = FlowExecutionPlan(flow.nodes || [], flow.edges || []);
   if (result.error) {
+    if (result.error.type === FlowExecutionPlanValidationError.NO_ENTRY_POINT) {
+      throw new Error("No entry point found (e.g., Launch browser)");
+    }
+    if (result.error.type === FlowExecutionPlanValidationError.INVALID_INPUTS) {
+      const missing = result.error.invalidInputs
+        ?.map((i) => i.inputs.join(", "))
+        .join("; ");
+      throw new Error(`Please fill required inputs: ${missing}`);
+    }
     throw new Error("Flow execution plan invalid");
   }
 
