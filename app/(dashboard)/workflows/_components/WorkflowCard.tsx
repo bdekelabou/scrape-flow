@@ -149,7 +149,9 @@ function WorkflowActions({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const duplicateMutation = useMutation({
-    mutationFn: DuplicateWorkflow,
+    mutationFn: async (data: { workflowId: string; name: string; description?: string }) => {
+      return await DuplicateWorkflow(data);
+    },
     onSuccess: () => {
       toast.success("Workflow duplicated", { id: "duplicate-workflow" });
     },

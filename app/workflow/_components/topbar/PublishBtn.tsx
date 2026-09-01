@@ -12,7 +12,9 @@ export default function PublishBtn({ workflowId }: { workflowId: string }) {
   const { toObject } = useReactFlow();
 
   const mutation = useMutation({
-    mutationFn: PublishWorkflow,
+    mutationFn: async (data: { id: string; flowDefinition: string }) => {
+      return await PublishWorkflow(data);
+    },
     onSuccess: () => {
       toast.success("Workflow published", { id: "publish-workflow" });
     },

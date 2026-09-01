@@ -9,7 +9,9 @@ import { toast } from "sonner";
 
 export default function UnpublishBtn({ workflowId }: { workflowId: string }) {
   const mutation = useMutation({
-    mutationFn: UnpublishWorkflow,
+    mutationFn: async (data: { id: string }) => {
+      return await UnpublishWorkflow(data);
+    },
     onSuccess: () => {
       toast.success("Workflow unpublished", { id: "unpublish-workflow" });
     },

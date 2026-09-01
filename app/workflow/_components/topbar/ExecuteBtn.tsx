@@ -14,7 +14,9 @@ export default function ExecuteBtn({ workflowId }: { workflowId: string }) {
   const router = useRouter();
 
   const mutation = useMutation({
-    mutationFn: RunWorkflow,
+    mutationFn: async (data: { workflowId: string; flowDefinition?: string }) => {
+      return await RunWorkflow(data);
+    },
     onSuccess: () => {
       toast.success("Execution started", { id: "flow-execution" });
     },
