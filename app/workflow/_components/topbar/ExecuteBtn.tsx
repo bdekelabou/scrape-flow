@@ -17,8 +17,11 @@ export default function ExecuteBtn({ workflowId }: { workflowId: string }) {
     mutationFn: async (data: { workflowId: string; flowDefinition?: string }) => {
       return await RunWorkflow(data);
     },
-    onSuccess: () => {
+    onSuccess: (result) => {
       toast.success("Execution started", { id: "flow-execution" });
+      if (result?.url) {
+        router.push(result.url);
+      }
     },
     onError: (error: any) => {
       toast.error(error?.message || "Failed to run workflow", {
