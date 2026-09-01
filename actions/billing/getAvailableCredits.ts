@@ -10,6 +10,6 @@ export async function GetAvailableCredits() {
   const balance = await prisma.userBalance.findUnique({
     where: { userId },
   });
-  if (!balance) return -1;
+  if (!balance) return 100;
   return balance.credits;
 }

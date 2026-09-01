@@ -93,3 +93,14 @@ model UserCredential {
 
   @@unique([name, userId])
 }
+
+model UserPurchase {
+  id          String   @id @default(cuid())
+  userId      String
+  stripeId    String
+  description String
+  amount      Int
+  currency    String
+  date        DateTime @default(now())
+}
+

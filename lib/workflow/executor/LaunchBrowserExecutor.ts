@@ -1,25 +1,39 @@
-import { ExecutionContext } from "@/types/execution";
+import { ExecutionEnvironment } from "@/types/execution";
+import { LogLevel } from "@/types/log";
+import puppeteer from "puppeteer";
 
 export async function LaunchBrowserExecutor(
-  environment: ExecutionContext["environment"],
-  log: ExecutionContext["log"],
-  node: ExecutionContext["node"]
+  environment: ExecutionEnvironment,
+  log: (msg: string, level?: LogLevel) => void,
+  node: any
 ): Promise<boolean> {
   try {
     const websiteUrl = environment.phases[node.id]?.inputs["Website Url"];
+    if (!websiteUrl) {
+      log("Website Url is required", "error");
+      return false;
+    }
     log(`Launching browser for URL: ${websiteUrl}`, "info");
 
-    // In browser execution environment, simulate or manage page navigation
-    environment.browser = { isAlive: true };
-    environment.phases[node.id] = {
-      inputs: { "Website Url": websiteUrl },
-      outputs: { "Web page": "browser_instance_active" },
-    };
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
 
-    log(`Successfully launched browser for ${websiteUrl}`, "info");
+    environment.browser = browser;
+
+    const page = await browser.newPage();
+    await page.goto(websiteUrl, { waitUntil: "domcontentloaded" });
+    environment.page = page;
+
+    environment.phases[node.id].outputs = { "Web page": websiteUrl };
+
+    log(`Browser launched successfully at ${websiteUrl}`, "info");
     return true;
   } catch (error: any) {
     log(`Failed to launch browser: ${error.message}`, "error");
     return false;
   }
 }
+
+

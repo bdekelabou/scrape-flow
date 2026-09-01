@@ -1,18 +1,30 @@
-import { ExecutionContext } from "@/types/execution";
+import { ExecutionEnvironment } from "@/types/execution";
+import { LogLevel } from "@/types/log";
 
 export async function NavigateToUrlExecutor(
-  environment: ExecutionContext["environment"],
-  log: ExecutionContext["log"],
-  node: ExecutionContext["node"]
+  environment: ExecutionEnvironment,
+  log: (msg: string, level?: LogLevel) => void,
+  node: any
 ): Promise<boolean> {
   try {
     const url = environment.phases[node.id]?.inputs["URL"];
+
+    if (!url) {
+      log("URL is required", "error");
+      return false;
+    }
+
+    const page = environment.page;
+    if (!page) {
+      log("No page found in execution environment", "error");
+      return false;
+    }
+
     log(`Navigating to URL: ${url}`, "info");
 
-    environment.phases[node.id] = {
-      inputs: { "Web page": "browser_instance_active", URL: url || "" },
-      outputs: { "Web page": "browser_instance_active" },
-    };
+    await page.goto(url, { waitUntil: "domcontentloaded" });
+
+    environment.phases[node.id].outputs = { "Web page": url };
 
     log(`Successfully navigated to ${url}`, "info");
     return true;
@@ -21,3 +33,4 @@ export async function NavigateToUrlExecutor(
     return false;
   }
 }
+

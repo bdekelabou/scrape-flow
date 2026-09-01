@@ -1,25 +1,42 @@
-import { ExecutionContext } from "@/types/execution";
+import { ExecutionEnvironment } from "@/types/execution";
+import { LogLevel } from "@/types/log";
 
 export async function FillInputExecutor(
-  environment: ExecutionContext["environment"],
-  log: ExecutionContext["log"],
-  node: ExecutionContext["node"]
+  environment: ExecutionEnvironment,
+  log: (msg: string, level?: LogLevel) => void,
+  node: any
 ): Promise<boolean> {
   try {
     const selector = environment.phases[node.id]?.inputs["Selector"];
     const value = environment.phases[node.id]?.inputs["Value"];
 
-    log(`Filling input ${selector} with value ${value}`, "info");
+    if (!selector) {
+      log("Selector is required", "error");
+      return false;
+    }
+    if (!value) {
+      log("Value is required", "error");
+      return false;
+    }
 
-    environment.phases[node.id] = {
-      inputs: { "Web page": "browser_instance_active", Selector: selector || "", Value: value || "" },
-      outputs: { "Web page": "browser_instance_active" },
-    };
+    const page = environment.page;
+    if (!page) {
+      log("No page found in execution environment", "error");
+      return false;
+    }
 
-    log(`Successfully filled input ${selector}`, "info");
+    log(`Filling input element "${selector}" with value: "${value}"`, "info");
+
+    await page.waitForSelector(selector, { timeout: 10000 });
+    await page.type(selector, value);
+
+    environment.phases[node.id].outputs = { "Web page": "browser_instance_active" };
+
+    log(`Successfully filled input "${selector}"`, "info");
     return true;
   } catch (error: any) {
     log(`Failed to fill input: ${error.message}`, "error");
     return false;
   }
 }
+

@@ -1,27 +1,27 @@
-import { ExecutionContext } from "@/types/execution";
+import { ExecutionEnvironment } from "@/types/execution";
+import { LogLevel } from "@/types/log";
 
 export async function PageToHtmlExecutor(
-  environment: ExecutionContext["environment"],
-  log: ExecutionContext["log"],
-  node: ExecutionContext["node"]
+  environment: ExecutionEnvironment,
+  log: (msg: string, level?: LogLevel) => void,
+  node: any
 ): Promise<boolean> {
   try {
-    log("Extracting HTML content from web page", "info");
+    log("Getting HTML from page", "info");
 
-    const htmlContent = "<html><body><main><h1>ScrapeFlow Data</h1><p class='content'>Extracted sample text data</p></main></body></html>";
+    const page = environment.page;
+    if (!page) {
+      log("No page available in environment", "error");
+      return false;
+    }
 
-    environment.phases[node.id] = {
-      inputs: { "Web page": "browser_instance_active" },
-      outputs: {
-        Html: htmlContent,
-        "Web page": "browser_instance_active",
-      },
-    };
+    const html = await page.content();
+    environment.phases[node.id].outputs = { Html: html };
 
-    log("Successfully extracted HTML from page", "info");
+    log(`Got HTML from page (${html.length} characters)`, "info");
     return true;
   } catch (error: any) {
-    log(`Failed to extract HTML: ${error.message}`, "error");
+    log(`Failed to get HTML from page: ${error.message}`, "error");
     return false;
   }
 }

@@ -14,6 +14,8 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 
+import UserAvailableCreditsBadge from './UserAvailableCreditsBadge';
+
 const routes = [
     {
         href: '',
@@ -52,8 +54,10 @@ function DesktopSidebar() {
         <div className='flex items-center justify-center gap-2 border-b-[1px] border-separate p-4'>
             <Logo />
         </div>
-        <div className='p-2'> TODO CREDITS</div>
-        <div className='flex flex-col p-2'>
+        <div className='p-2'>
+            <UserAvailableCreditsBadge />
+        </div>
+        <div className='flex flex-col p-2 gap-1'>
             {routes.map((route) => (
                 <Link 
                     key={route.href}
@@ -96,6 +100,7 @@ export function MobileSidebar() {
                         side={'left'}
                     >
                         <Logo />
+                        <UserAvailableCreditsBadge />
                         <div className='flex flex-col gap-1'>
                             {routes.map((route) => (
                                 <Link 
