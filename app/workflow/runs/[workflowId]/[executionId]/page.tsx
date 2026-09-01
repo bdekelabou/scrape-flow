@@ -15,6 +15,7 @@ export default async function ExecutionViewerPage({
         title="Workflow Execution"
         subtitle={`Execution ID: ${params.executionId}`}
         workflowId={params.workflowId}
+        hideButtons
       />
       <section className="flex h-full overflow-auto">
         <Suspense

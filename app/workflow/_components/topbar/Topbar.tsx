@@ -16,9 +16,10 @@ interface Props {
   subtitle?: string;
   workflowId: string;
   isPublished?: boolean;
+  hideButtons?: boolean;
 }
 
-export default function Topbar({ title, subtitle, workflowId, isPublished }: Props) {
+export default function Topbar({ title, subtitle, workflowId, isPublished, hideButtons = false }: Props) {
   const router = useRouter();
   return (
     <header className='flex p-2 border-b-2 border-separate justify-between w-full h-[60px] sticky top-0 bg-background z-10'>
@@ -36,13 +37,17 @@ export default function Topbar({ title, subtitle, workflowId, isPublished }: Pro
         </div>
       </div>
       <div className='flex gap-2 flex-1 justify-end items-center'>
-        <ExecuteBtn workflowId={workflowId} />
-        {isPublished ? (
-          <UnpublishBtn workflowId={workflowId} />
-        ) : (
-          <PublishBtn workflowId={workflowId} />
+        {!hideButtons && (
+          <>
+            <ExecuteBtn workflowId={workflowId} />
+            {isPublished ? (
+              <UnpublishBtn workflowId={workflowId} />
+            ) : (
+              <PublishBtn workflowId={workflowId} />
+            )}
+            <SaveBtn workflowId={workflowId} />
+          </>
         )}
-        <SaveBtn workflowId={workflowId} />
       </div>
     </header>
   );
