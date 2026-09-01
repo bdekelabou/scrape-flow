@@ -6,23 +6,25 @@ import { ReactFlowProvider } from "@xyflow/react";
 import FlowEditor from '@/app/workflow/_components/FlowEditor';
 import Topbar from '@/app/workflow/_components/topbar/Topbar';
 import TaskMenu from './TaskMenu';
+import { WorkflowStatus } from '@/types/workflow';
 
-function Editor({ workflow }: { workflow: Workflow}) {
+function Editor({ workflow }: { workflow: Workflow }) {
   return (
     <ReactFlowProvider>
-        <div className='flex flex-col h-full w-full overflow-hiddden'>
-          <Topbar
-            title='Workflow editor' 
-            subtitle={workflow.name}
-            workflowId={workflow.id} 
-          />
-            <section className='flex h-full overflow-auto'>
-                <TaskMenu />
-                <FlowEditor workflow={workflow} />
-            </section>
-        </div>
+      <div className='flex flex-col h-full w-full overflow-hidden'>
+        <Topbar
+          title='Workflow editor' 
+          subtitle={workflow.name}
+          workflowId={workflow.id} 
+          isPublished={workflow.status === WorkflowStatus.PUBLISHED}
+        />
+        <section className='flex h-full overflow-auto'>
+          <TaskMenu />
+          <FlowEditor workflow={workflow} />
+        </section>
+      </div>
     </ReactFlowProvider>
   );
 }
 
-export default Editor
+export default Editor;

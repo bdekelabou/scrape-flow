@@ -1,36 +1,79 @@
 "use client";
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { TaskRegistry } from '@/lib/workflow/task/registry';
-import { TaskType } from '@/types/task';
-import { CoinsIcon, GripVertical } from 'lucide-react';
-import React from 'react'
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { CreateFlowNode } from "@/lib/workflow/createFlowNode";
+import { TaskRegistry } from "@/lib/workflow/task/registry";
+import { AppNode } from "@/types/appNode";
+import { TaskType } from "@/types/task";
+import { useReactFlow } from "@xyflow/react";
+import {
+  CoinsIcon,
+  CopyIcon,
+  GripVerticalIcon,
+  Trash2Icon,
+} from "lucide-react";
 
-function NodeHeader({ taskType }: { taskType: TaskType}) {
-    const task = TaskRegistry[taskType];
+function NodeHeader({
+  taskType,
+  nodeId,
+}: {
+  taskType: TaskType;
+  nodeId: string;
+}) {
+  const task = TaskRegistry[taskType];
+  const { deleteElements, getNode, addNodes } = useReactFlow();
+
   return (
-    <div className='flex items-center gap-2 p-2'>
-        <task.icon size={16} />
-        <div className='flex justify-between items-center w-full'>
-            <p className='text-xs font-bold uppercase text-muted-foreground'>
-                {task.label}
-            </p>
-            <div className='flex gap-1 items-center'>
-                {task.isEntryPoint && <Badge>Entry point</Badge>}
-                <Badge className='gap-2 flex items-center text-xs'>
-                    <CoinsIcon size={16} />
-                    TODO
-                </Badge>
-                <Button 
-                    variant={'ghost'} 
-                    size={'icon'} 
-                    className='drag-handle cursor-grab'
-                >
-                        <GripVertical size={20} />
-                </Button>
-            </div>
+    <div className="flex items-center gap-2 p-2">
+      <task.icon size={16} />
+      <div className="flex justify-between items-center w-full">
+        <p className="text-xs font-bold uppercase text-muted-foreground">
+          {task.label}
+        </p>
+        <div className="flex gap-1 items-center">
+          {task.isEntryPoint && <Badge>Entry point</Badge>}
+          <Badge className="gap-2 flex items-center text-xs">
+            <CoinsIcon size={16} />
+            {task.credits}
+          </Badge>
+          {!task.isEntryPoint && (
+            <>
+              <Button
+                variant={"ghost"}
+                size={"icon"}
+                onClick={() => {
+                  deleteElements({ nodes: [{ id: nodeId }] });
+                }}
+              >
+                <Trash2Icon size={12} />
+              </Button>
+              <Button
+                variant={"ghost"}
+                size={"icon"}
+                onClick={() => {
+                  const node = getNode(nodeId) as AppNode;
+                  const newPosition = {
+                    x: node.position.x,
+                    y: node.position.y + (node.measured?.height ?? 100) + 20,
+                  };
+                  const newNode = CreateFlowNode(node.data.type, newPosition);
+                  addNodes([newNode]);
+                }}
+              >
+                <CopyIcon size={12} />
+              </Button>
+            </>
+          )}
+          <Button
+            variant={"ghost"}
+            size={"icon"}
+            className="drag-handle cursor-grab"
+          >
+            <GripVerticalIcon size={20} />
+          </Button>
         </div>
+      </div>
     </div>
   );
 }

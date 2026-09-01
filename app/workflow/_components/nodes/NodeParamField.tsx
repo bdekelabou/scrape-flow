@@ -1,12 +1,13 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
 import { TaskParam, TaskParamType } from "@/types/task";
 import StringParam from "./param/StringParam";
 import { useReactFlow } from "@xyflow/react";
 import { AppNode } from "@/types/appNode";
 import { useCallback } from "react";
 import BrowserInstanceParam from "./param/BrowserInstanceParam";
+import SelectParam from "./param/SelectParam";
+import CredentialParam from "./param/CredentialParam";
 
 function NodeParamField({ 
     param, 
@@ -20,7 +21,6 @@ function NodeParamField({
     const {updateNodeData, getNode} = useReactFlow();
     const node = getNode(nodeId) as AppNode;
     const value = node?.data.inputs?.[param.name];
-    // console.log("@VALUE", value);
 
     const updateNodeParamValue = useCallback(
         (newValue: string) => {
@@ -31,9 +31,8 @@ function NodeParamField({
                 },
             });
         },
-        [nodeId, updateNodeData,param.name, node?.data.inputs]
+        [nodeId, updateNodeData, param.name, node?.data.inputs]
     );
-
 
     switch (param.type) {
         case TaskParamType.STRING:
@@ -53,10 +52,28 @@ function NodeParamField({
                     updateNodeParamValue={updateNodeParamValue} 
                 />
             );
+        case TaskParamType.SELECT:
+            return (
+                <SelectParam
+                    param={param}
+                    value={value}
+                    updateNodeParamValue={updateNodeParamValue}
+                    disabled={disabled}
+                />
+            );
+        case TaskParamType.CREDENTIAL:
+            return (
+                <CredentialParam
+                    param={param}
+                    value={value}
+                    updateNodeParamValue={updateNodeParamValue}
+                    disabled={disabled}
+                />
+            );
         default:
             return (
                 <div className="w-full">
-                <p className="text-xs text-muted-foreground">Not implemented</p>
+                    <p className="text-xs text-muted-foreground">Not implemented</p>
                 </div>
             );
     }
