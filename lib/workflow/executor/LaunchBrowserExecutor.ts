@@ -15,7 +15,21 @@ export async function LaunchBrowserExecutor(
     }
     log(`Launching browser for URL: ${websiteUrl}`, "info");
 
-    const browser = await puppeteer.launch({
+    let p: any = puppeteer;
+    if (!p || typeof p.launch !== "function") {
+      p = (puppeteer as any)?.default;
+    }
+    if (!p || typeof p.launch !== "function") {
+      const dyn = await import("puppeteer");
+      p = typeof dyn.launch === "function" ? dyn : dyn.default;
+    }
+
+    if (!p || typeof p.launch !== "function") {
+      log("Puppeteer library could not be loaded", "error");
+      return false;
+    }
+
+    const browser = await p.launch({
       headless: true,
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
@@ -35,5 +49,3 @@ export async function LaunchBrowserExecutor(
     return false;
   }
 }
-
-

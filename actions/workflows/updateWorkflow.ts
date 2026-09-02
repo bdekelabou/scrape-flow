@@ -13,11 +13,10 @@ export async function UpdateWorkflow({
     id: string;
     definition: string;
 }) {
-    await waitFor(3000);
     const { userId } = auth();
 
     if(!userId) {
-        throw new Error('unathenticated');
+        throw new Error('unauthenticated');
     }
 
     const workflow = await prisma.workflow.findUnique({
@@ -29,9 +28,7 @@ export async function UpdateWorkflow({
     if (!workflow) {
         throw new Error('workflow not found');
     }
-    if (workflow.status !== WorkflowStatus.DRAFT){
-        throw new Error('workflow is not a draft');
-    }
+
     await prisma.workflow.update({
         data: {
             definition,

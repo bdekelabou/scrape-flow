@@ -20,8 +20,8 @@ export default function SaveBtn({ workflowId }: { workflowId: string }) {
         onSuccess: () => {
             toast.success('Flow saved successfully', {id: 'save-workflow'});
         },
-        onError: () => {
-            toast.error('Something went wrong', {id: 'save-workflow'});
+        onError: (error: any) => {
+            toast.error(error?.message || 'Something went wrong', {id: 'save-workflow'});
         },
     });
 
