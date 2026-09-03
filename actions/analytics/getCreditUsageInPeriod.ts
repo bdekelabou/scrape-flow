@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { WorkflowExecutionStatus } from "@/types/workflow";
 import { auth } from "@clerk/nextjs/server";
-import { eachDayOfInterval, format, startOfMonth } from "date-fns";
+import { eachDayOfInterval, format, startOfMonth, endOfMonth } from "date-fns";
 
 export async function GetCreditUsageInPeriod(period: {
   month: number;
@@ -12,16 +12,22 @@ export async function GetCreditUsageInPeriod(period: {
   const { userId } = auth();
   if (!userId) throw new Error("unauthenticated");
 
+  const now = new Date();
+  const monthStart = startOfMonth(new Date(period.year, period.month - 1));
+  const monthEnd =
+    period.year === now.getFullYear() && period.month === now.getMonth() + 1
+      ? now
+      : endOfMonth(monthStart);
+
   const dateRange = {
-    gte: startOfMonth(new Date(period.year, period.month - 1)),
-    lte: new Date(),
+    gte: monthStart,
+    lte: monthEnd,
   };
 
   const executionPhases = await prisma.executionPhase.findMany({
     where: {
       userId,
-      startedAt: { gte: dateRange.gte },
-      completedAt: { lte: dateRange.lte },
+      startedAt: dateRange,
       status: {
         in: ["COMPLETED", "FAILED"],
       },

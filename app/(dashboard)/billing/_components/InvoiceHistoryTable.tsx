@@ -1,10 +1,14 @@
 "use client";
 
+import { DownloadInvoice } from "@/actions/billing/downloadInvoice";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { UserPurchase } from "@prisma/client";
+import { useMutation } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { ReceiptIcon } from "lucide-react";
+import { DownloadIcon, Loader2Icon, ReceiptIcon } from "lucide-react";
 import React from "react";
+import { toast } from "sonner";
 
 export default function InvoiceHistoryTable({
   purchases,
@@ -37,6 +41,7 @@ export default function InvoiceHistoryTable({
                   <th className="px-4 py-3 text-left font-semibold">Description</th>
                   <th className="px-4 py-3 text-left font-semibold">Amount</th>
                   <th className="px-4 py-3 text-left font-semibold">ID</th>
+                  <th className="px-4 py-3 text-right font-semibold">Invoice</th>
                 </tr>
               </thead>
               <tbody>
@@ -54,6 +59,9 @@ export default function InvoiceHistoryTable({
                     <td className="px-4 py-3 font-mono text-xs text-muted-foreground">
                       {purchase.stripeId}
                     </td>
+                    <td className="px-4 py-3 text-right">
+                      <DownloadInvoiceBtn purchaseId={purchase.id} />
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -65,3 +73,40 @@ export default function InvoiceHistoryTable({
   );
 }
 
+function DownloadInvoiceBtn({ purchaseId }: { purchaseId: string }) {
+  const mutation = useMutation({
+    mutationFn: async () => {
+      return await DownloadInvoice(purchaseId);
+    },
+    onSuccess: (url) => {
+      if (url && url.startsWith("http")) {
+        window.open(url, "_blank");
+      } else {
+        toast.info("Invoice receipt generated", { id: "download-invoice" });
+      }
+    },
+    onError: () => {
+      toast.error("Failed to retrieve invoice", { id: "download-invoice" });
+    },
+  });
+
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      disabled={mutation.isPending}
+      onClick={() => {
+        toast.loading("Fetching invoice...", { id: "download-invoice" });
+        mutation.mutate();
+      }}
+      className="gap-1 h-8 px-2 text-xs"
+    >
+      {mutation.isPending ? (
+        <Loader2Icon size={14} className="animate-spin" />
+      ) : (
+        <DownloadIcon size={14} />
+      )}
+      PDF
+    </Button>
+  );
+}

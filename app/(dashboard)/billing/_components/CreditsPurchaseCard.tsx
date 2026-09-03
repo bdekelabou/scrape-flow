@@ -18,11 +18,18 @@ export default function CreditsPurchaseCard() {
     mutationFn: async (packId: PackId) => {
       return await PurchaseCredits({ packId });
     },
-    onSuccess: () => {
-      toast.success("Credits added successfully!", { id: "purchase-credits" });
+    onSuccess: (data) => {
+      toast.success("Redirecting to checkout...", { id: "purchase-credits" });
+      if (data?.url && data.url.startsWith("http")) {
+        window.location.href = data.url;
+      } else {
+        toast.success("Credits added successfully!", { id: "purchase-credits" });
+      }
     },
-    onError: () => {
-      toast.error("Failed to purchase credits", { id: "purchase-credits" });
+    onError: (err: any) => {
+      toast.error(err?.message || "Failed to purchase credits", {
+        id: "purchase-credits",
+      });
     },
   });
 

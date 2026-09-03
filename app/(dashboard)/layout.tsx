@@ -2,10 +2,23 @@ import BreadcrumbHeader from "@/components/BreadcrumbHeader"
 import DesktopSidebar from "@/components/Sidebar"
 import { ModeToggle } from "@/components/ThemeModeToggle"
 import { Separator } from "@/components/ui/separator"
-import { SignedIn, SignIn, UserButton } from "@clerk/nextjs"
+import { SignedIn, UserButton } from "@clerk/nextjs"
+import { auth } from "@clerk/nextjs/server"
+import prisma from "@/lib/prisma"
+import { redirect } from "next/navigation"
 import React from "react"
 
-function layout({ children }: { children: React.ReactNode }) {
+async function layout({ children }: { children: React.ReactNode }) {
+  const { userId } = auth();
+  if (userId) {
+    const userBalance = await prisma.userBalance.findUnique({
+      where: { userId },
+    });
+    if (!userBalance) {
+      redirect("/setup");
+    }
+  }
+
   return (
     <div className="flex h-screen">
       <DesktopSidebar />

@@ -1,6 +1,5 @@
 import { ExecutionEnvironment } from "@/types/execution";
 import { LogLevel } from "@/types/log";
-import puppeteer from "puppeteer";
 
 export async function LaunchBrowserExecutor(
   environment: ExecutionEnvironment,
@@ -15,14 +14,13 @@ export async function LaunchBrowserExecutor(
     }
     log(`Launching browser for URL: ${websiteUrl}`, "info");
 
-    let p: any = puppeteer;
-    if (!p || typeof p.launch !== "function") {
-      p = (puppeteer as any)?.default;
-    }
-    if (!p || typeof p.launch !== "function") {
-      const dyn = await import("puppeteer");
-      p = typeof dyn.launch === "function" ? dyn : dyn.default;
-    }
+    const puppeteerModule = await import("puppeteer");
+    const p: any =
+      typeof puppeteerModule.launch === "function"
+        ? puppeteerModule
+        : typeof (puppeteerModule as any).default?.launch === "function"
+        ? (puppeteerModule as any).default
+        : puppeteerModule.default;
 
     if (!p || typeof p.launch !== "function") {
       log("Puppeteer library could not be loaded", "error");
